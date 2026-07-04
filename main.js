@@ -77,7 +77,6 @@ function makeBook(newBook) {
       if (confirm("Anda Yakin Menghapus Buku Dari Bookshelf?")) {
         removeBookTitleFromReaded(newBook.id);
         alert("Buku Dihapus Dari Bookshelf");
-      } else {
       }
     });
 
@@ -98,7 +97,6 @@ function makeBook(newBook) {
       if (confirm("Anda Yakin Menghapus Buku Dari Bookshelf?")) {
         removeBookTitleFromReaded(newBook.id);
         alert("Buku Dihapus Dari Bookshelf");
-      } else {
       }
     });
     container.append(checkButton, trashButton);
@@ -149,24 +147,20 @@ function undoBookTitleFromReaded(bookId) {
   saveData();
 }
 
-function resetBookList(newBook) {
-  const resetAll = bookIndex(newBook);
-
-  if (resetAll) return;
-
-  books.splice(resetAll);
+// FUNGSI YANG DIPERBAIKI
+function resetBookList() {
+  books.splice(0, books.length);
   document.dispatchEvent(new Event(CHANGE_EVENT));
   saveData();
 }
 
 const resetList = document.getElementById("btn-reset");
 resetList.addEventListener("click", function () {
-  const reset = books.length;
-  if (reset == 0) {
+  if (books.length === 0) {
     alert("Bookshelf Kosong");
   } else {
     if (confirm("Anda Yakin Menghapus Semua Data Bookshelf?")) {
-      resetBookList(reset);
+      resetBookList(); // DIPANGGIL TANPA PARAMETER
       alert("Semua Data Dihapus");
     }
   }
@@ -255,12 +249,17 @@ document.addEventListener(CHANGE_EVENT, function () {
       unReadBook.innerText = unRead.length;
     }
   }
-  ifNoList();
+  
+  // Asumsi fungsi ifNoList() ada di tempat lain di kodemu
+  if (typeof ifNoList === "function") {
+    ifNoList();
+  }
+  
   totalOfBooks();
 });
 
 document.getElementById("bookTitle").addEventListener("keyup", function () {
-  const inputValue = document.getElementById("bookTitle").value;
+  const inputValue = document.getElementById("bookTitle").value.toLowerCase(); // Ditambah toLowerCase() biar pencariannya lebih akurat
   const listBooks = document.querySelectorAll(".list-item");
 
   for (let i = 0; i < listBooks.length; i++) {
@@ -282,7 +281,7 @@ document.addEventListener(SAVED_EVENT, function () {
 const toastElement = document.getElementById("toastMessage");
 document.addEventListener(SAVED_EVENT, function () {
   const todoData = localStorage.getItem(STORAGE_KEY);
-  if (todoData) {
+  if (todoData && books.length > 0) {
     showToastMessage("Data Bookshelf berhasil disimpan!");
   } else {
     showToastMessage("Data Bookshelf kosong.");
