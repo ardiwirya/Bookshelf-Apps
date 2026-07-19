@@ -1,4 +1,4 @@
-# Bookshelf Apps
+# Bookshelf Apps 
 
 Aplikasi pengelolaan data buku berbasis **DOM Manipulation** dan **Web Storage**, dibuat sebagai submission kelas [Belajar Membuat Front-End Web untuk Pemula](https://www.dicoding.com/academies/315) — Dicoding. Submission ini mendapat rating **4/5**.
 
